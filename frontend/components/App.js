@@ -10,12 +10,13 @@ export default function App() {
   useEffect(() => { getDogs() }, [])
 
   const getDogs = () => {
-    fetch('/api/dogs')
+    fetch('http://localhost:3003/api/dogs')
       .then(res => {
         if (!res.ok) throw new Error('Problem getting dogs')
           return res.json()
       })
       .then(setDogs)
+      .catch(err => console.log(err))
   }
   return (
     <div>
