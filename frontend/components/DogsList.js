@@ -1,11 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function DogsList({ dogs, getDogs, setCurrentDog }) {
+  const navigate = useNavigate()
   const editDog = id => {
-    console.log('...editing')
+    console.log('...editing', id)
+    setCurrentDog(id)
+    navigate('form')
   } 
   const deleteDog = id => {
-    console.log('...deleting')
+    console.log('...deleting', id)
   }
   return (
     <div>
@@ -16,8 +20,8 @@ export default function DogsList({ dogs, getDogs, setCurrentDog }) {
           <li key={dog.id}>
             {dog.name}, {dog.breed}, {dog.adopted ? '' : 'NOT'}adopted
             <div>
-              <button>Edit</button>
-              <button>Delete</button>
+              <button onClick={() => editDog(dog.id)}>Edit</button>
+              <button onClick={() => deleteDog(dog.id)}>Delete</button>
             </div>
           </li>
         ))}
