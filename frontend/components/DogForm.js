@@ -11,15 +11,28 @@ export default function DogForm({ dog, reset, getDogs })  {
   useEffect(() => {
     fetch('http://localhost:3003/api/dogs/breeds')
       .then(res => res.json())
-      .then(breeds => setBreeds(breeds))
+      .then(breeds => setBreeds(breeds.toSorted()))
       .catch(err => console.error(err))
   }, [])
   useEffect(() => {
     if (dog) setValues(dog)
       else setValues(initialForm)
   }, [dog])
+  const postDog = () => {
+    console.log('POSTING a new dog!')
+  }
+  const putDog = () => {
+    console.log('PUTing an existing dog!')
+  }
+  const onReset = (event) => {
+    event.preventDefault()
+    setValues(initialForm)
+    reset()
+  }
   const onSubmit = (event) => {
     event.preventDefault()
+    const action = dog ? putDog : postDog
+    action()
   }
   const onChange = (event) => {
     const { name, value, type, checked } = event.target
@@ -30,7 +43,7 @@ export default function DogForm({ dog, reset, getDogs })  {
   return (
     <div>
       <h2>
-        Create Dog
+        {dog ? "Update Dog" : "Create Dog"}
       </h2>
       <form onSubmit={onSubmit}>
         <input
@@ -60,9 +73,9 @@ export default function DogForm({ dog, reset, getDogs })  {
         </label>
         <div>
           <button type="submit">
-            Create Dog
+            {dog ? "Update Dog" : "Create Dog"}
           </button>
-          <button aria-label="Reset form">Reset</button>
+          <button onClick={onReset} aria-label="Reset form">Reset</button>
         </div>
       </form>
     </div>
