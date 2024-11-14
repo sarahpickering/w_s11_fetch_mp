@@ -20,9 +20,32 @@ export default function DogForm({ dog, reset, getDogs })  {
   }, [dog])
   const postDog = () => {
     console.log('POSTING a new dog!')
+      fetch('http://localhost:3003/api/dogs', {
+        method: 'POST', 
+        body: JSON.stringify(values),
+        headers: new Headers ({ 'Content-Type': 'application/json'})
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Problem POSTing dog')
+        getDogs()
+        navigate('/')
+      })
+      .catch(err => console.error(err))
   }
   const putDog = () => {
-    console.log('PUTing an existing dog!')
+    console.log('PUTING a new dog!')
+      fetch(`http://localhost:3003/api/dogs/${values.id}`, {
+        method: 'PUT', 
+        body: JSON.stringify(values),
+        headers: new Headers ({ 'Content-Type': 'application/json'})
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Problem Puting dog')
+        getDogs()
+        reset()
+        navigate('/')
+      })
+      .catch(err => console.error(err))
   }
   const onReset = (event) => {
     event.preventDefault()
